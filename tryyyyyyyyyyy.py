@@ -144,21 +144,24 @@ from nltk.tokenize import word_tokenize
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from scipy.spatial.distance import cosine
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 # Initialize the MongoDB client globally
-client = MongoClient('mongodb://localhost:27017')
-db = client['data']  # Choose or create a database
-collection = db['conversations']  # Choose or create a collection
+client = MongoClient('mongodb://localhost:27017/')
+db = client['Chatbot']  # Choose or create a database
+collection = db['convo']  # Choose or create a collection
 
 # Initialize the ChatBot
 bot = ChatBot('ChatBot')
 trainer = ListTrainer(bot)
 
 # Train the chatbot with data
-for file in os.listdir('C:\\Users\\charu\\PycharmProjects\\flaskProject1\\data'):
-    chats = open('C:\\Users\\charu\\PycharmProjects\\flaskProject1\\data\\' + file, 'r').readlines()
+for file in os.listdir('E:\\a\\chatt\\data'):
+    chats = open('E:\\a\\chatt\\data\\' + file, 'r').readlines()
     chats = [chat.lower() for chat in chats]
     trainer.train(chats)
 
@@ -206,15 +209,11 @@ def get_most_similar_question(user_question, questions):
     return most_similar_question, max_similarity
 
 
-@app.route("/")
-def hello():
-    return render_template('chat.html')
-
 
 @app.route("/ask", methods=['POST'])
 def ask():
     # Get user's message
-    message = str(request.form['messageText'])
+    message = request.json['message']
 
     # Preprocess user's message
     processed_message = preprocess_text(message)
@@ -243,8 +242,7 @@ def ask():
         collection.insert_one(conversation_entry)
     except Exception as e:
         print("Error inserting conversation into MongoDB:", e)
-
-    # Check chatbot's confidence
+        # Check chatbot's confidence
     if bot_response.confidence > 0.1:
         return jsonify({'status': 'OK', 'answer': str(bot_response)})
     elif message == "bye":
@@ -256,10 +254,9 @@ def ask():
             soup = BeautifulSoup(page, "html.parser")
             p = soup.find_all("p")
             return jsonify({'status': 'OK', 'answer': p[1].text})
-
         except IndexError as error:
             return jsonify({'status': 'OK', 'answer': 'Sorry, I have no idea about that.'})
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

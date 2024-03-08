@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import './Chatwindow.css';
 
 const ChatWindow = ({ onClose }) => {
   const [message, setMessage] = useState('');
-  const [sentMessages, setSentMessages] = useState(['namaste']);
+  const [sentMessages, setSentMessages] = useState([]);
   const [buttonMessages] = useState({
     Admissions: 'Admissions',
     Courses: 'Courses',
@@ -40,6 +40,11 @@ const ChatWindow = ({ onClose }) => {
     }
   };
 
+  useEffect(() => {
+    messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+  }, [sentMessages]);
+  
+
   const sendMessage = async () => {
     if (message.trim() !== '') {
       const newMessage = message;
@@ -49,7 +54,7 @@ const ChatWindow = ({ onClose }) => {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
 
       try {
-        const response = await fetch('http://localhost:5000/ask', {
+        const response = await fetch('http://127.0.1:5000/ask',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -71,23 +76,38 @@ const ChatWindow = ({ onClose }) => {
 
   
 
-  return (
+  return(
     <div className="chat-window">
       <div className="header">
         <button className="close-btn" onClick={onClose}> X </button>
-        <span className="chat-title">BV CHATBOT</span>
+        <span className="chat-title1">वनस्थली विद्यापीठ</span>
+        <span className="chat-title2">Banasthali Vidyapith</span>
+        
         <img src={require('./image.jpg')} alt="User" className="user-avatar" />
       </div>
+      <span className="chat-title3"> Welcome to Vidyapith</span>
       <div className="blur-background">
         <img src={require('./images.png')} alt="Background" className="blur-image" />
       </div>
       <div className="message-container" ref={messageContainerRef}>
         {sentMessages.map((message, index) => (
-          <div key={index} className={index % 2 === 0 ? "chatbot-message" : "user-message"}>
+          <div key={index} className={index % 2 === 0 ? "user-message" : "chatbot-message"}>
             {message}
           </div>
         ))}
       </div>
+      {/* <div className="message-container" ref={messageContainerRef}>
+      {sentMessages.map((message, index) => (
+        <div key={index} className={index % 2 === 0 ? "chatbot-message" : "user-message"}>
+          <div className="message-content">
+            <div className="message-text">{message}</div>
+          </div>
+        </div>
+      ))}
+    </div> */}
+    {/* <div className="avatar">
+        <img src={require('./images.png')} alt="Background" className="bot-image" />
+      </div> */}
       <div className="buttons-container">
         {Object.values(buttonMessages).map((buttonMessage, index) => (
           <button key={index} className="button-box" onClick={() => handleButtonClick(buttonMessage)}>
