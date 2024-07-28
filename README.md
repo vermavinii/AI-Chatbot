@@ -61,7 +61,7 @@ To get started with the AI-Chatbot, follow these steps:
 
 6. This project contains the Python(backend) and the React(frontend) as Frameworks. Follow the steps below to set up and run the project locally.
 
-   - Open the terminal and run the Python development server
+   - Open the terminal and run the Python development server i.e. app.py
      
    - Open another terminal and launch the Node by the following commands:
      
