@@ -2,7 +2,7 @@
 
 Welcome to the AI-Chatbot project! 
 
-The AI-Chatbot is designed to provide intelligent and context-aware responses to user inputs. It leverages machine learning algorithms and natural language processing to understand and respond to user queries.
+The AI-Chatbot is designed to provide intelligent and context-aware responses to user inputs. It leverages machine learning algorithms and natural language processing to understand and respond to user queries. 
 
 ## Features
 
@@ -10,6 +10,9 @@ The AI-Chatbot is designed to provide intelligent and context-aware responses to
 - User-friendly web interface
 - Integration with various data sources
 - Voice response functionality
+
+## NOTE
+The chatbot is pre-configured with data specific to Banasthali Vidyapith through YAML files, allowing it to answer questions related to the institution. However, it is customizable and can be tailored to any other data set or use case as required.
 
 ## Pre-requisites
 
@@ -69,3 +72,4 @@ To get started with the AI-Chatbot, follow these steps:
 		   npm run start
 
  This way you get reponses from the chatbot. Feel free to modify the code as per you need.
+ 
